@@ -31,13 +31,17 @@ body {
 }
 #header {
     text-align: center;
-    background-color: #1696c2;
+    background-color: #0e0e0e;
     padding: 40px 0;
 }
 #header img {
     height: 175px;
 }
-
+#wave {
+    width: 100%;
+    height: 100px;
+    margin: 0;
+}
 #header-bg {
     width: 100%;
     transform-origin:top;
@@ -67,8 +71,9 @@ body {
     height: 85px;
 }
 .button {
-    background-color: #1A1A1A;
-    color: #1DC5FF;
+    color: #1A1A1A;
+    background-color: #1DC5FF;
+    border-radius: 30px;
     width: 100%;
     padding: 10px 0;
     font-size: 1.4em;
@@ -78,7 +83,7 @@ body {
     font-family: "header", serif;
 }
 .button:hover {
-    box-shadow: 0 0 4px 0 #1A1A1A;
+    box-shadow: 0 0 8px 0 #1DC5FF;
 }
 
 a {
