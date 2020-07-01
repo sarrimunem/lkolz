@@ -37,7 +37,7 @@ body {
 #header img {
     height: 175px;
 }
-#wave {
+.wave {
     width: 100%;
     height: 100px;
     margin: 0;
@@ -71,19 +71,19 @@ body {
     height: 85px;
 }
 .button {
-    color: #1A1A1A;
-    background-color: #1DC5FF;
-    border-radius: 30px;
+    color: #1DC5FF;
+    background-color: #1c1c1c;
+    border-radius: 5px;
     width: 100%;
     padding: 10px 0;
-    font-size: 1.4em;
+    font-size: 1.5em;
     margin: 0 auto;
     transition: all 0.2s ease-in-out;
     display: inline-block;
     font-family: "header", serif;
 }
 .button:hover {
-    box-shadow: 0 0 8px 0 #1DC5FF;
+    box-shadow: 0 0 8px 0 black;
 }
 
 a {
@@ -94,9 +94,6 @@ a {
     padding: 30px;
     text-align: center;
 }
-#footer p {
-    margin-block-end: 0;
-}
 .section {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -104,7 +101,7 @@ a {
     margin: 0 auto;
     grid-column-gap: 15px;
 }
-@media only screen and (max-width: 1100px) {
+@media only screen and (max-width: 1340px) {
     .card-box {
         grid-template-columns: 1fr;
         text-align: center;
