@@ -2,31 +2,34 @@
 <html lang="en">
     <head>
         <title>QStats: The Ultimate Quaver Discord Bot</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <meta name="Description" content="Get Quaver profiles, scores and more without ever leaving Discord.">
+        <link rel="preload" as="style" type="text/css" href="style.css" onload="this.onload=null;this.rel='stylesheet'">
         <link rel="icon" type="image/svg+xml" href="logo.svg">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta name="theme-color" content="#1DC5FF"/>
     </head>
     <body>
         <div id="header-wrapper">
             <div id="header">
-                <img src="logo.svg">
-                <h1>QStats, the Ultimate Quaver Discord Bot</h1>
-                <p>Retrieve Quaver scores, map info, and player profiles.</p>
+                <img src="FullTextLogo.svg">
+                <p class="no-bottom">Get Quaver profiles, scores and more without ever leaving Discord.</p>
+                <p id="join">Join <span id="gcount">many</span> other servers and invite QStats today.</p>
                 <div class="section">
-                    <a href="https://discordapp.com/oauth2/authorize?client_id=709881098561257516&scope=bot&permissions=0" target="_blank">
-                        <div class="button">Invite to Server</div>
+                    <a href="https://discordapp.com/oauth2/authorize?client_id=709881098561257516&scope=bot&permissions=0" class="button">
+                        Invite Bot to Server
                     </a>
-                    <a href="https://github.com/ethanwritescode/QStats" target="_blank">
+                    <a href="https://github.com/ethanwritescode/QStats">
                         <div class="button">Github</div>
                     </a>
-                    <a href="https://discord.gg/F7RBKh2" target="_blank">
+                    <a href="https://discord.gg/F7RBKh2">
                         <div class="button">Support Server</div>
                     </a>
-                    <a href="https://quavergame.com" target="_blank">
-                        <div class="button">Quaver Home Page</div>
+                    <a href="https://quavergame.com">
+                        <div class="button">Quaver Website</div>
                     </a>
                 </div>
             </div>
+            <img src="BgTexture.svg" id="bg-texture">
         </div>
         <img src="wave.svg" class="wave">
         <div id="content">
@@ -78,6 +81,44 @@
         <div id="footer">
             <p>Developed by <a href="https://vysion.cc" style="color:#1DC5FF">Vysion#3272</a></p>
             <p>Not associated or endorsed by Quaver</p>
+            <div id="status" style="white-space: pre-line">
+                <p>nerd statistics below</p>
+            </div>
         </div>
     </body>
+    <script>
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0B';
+
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+        let req = new XMLHttpRequest();
+
+        req.onreadystatechange = function() {
+            if (req.readyState === 4 && req.status === 200) {
+                const d = JSON.parse(req.responseText);
+                document.getElementById("gcount").innerText = d.map((v) => { return v.shards.map((v2) => v2.guilds).reduce((a, b) => { return a + b}, 0)}).reduce((a, b) => { return a + b}, 0);
+                console.log(d);
+
+                for (let i = 0; i < d.length; i++) {
+                    const li = document.createElement("p");
+                    li.appendChild(document.createTextNode(`cluster ${i}: ${formatBytes(d[i].heap)} heap, ${formatBytes(d[i].rss)} rss\n${d[i].shards.map((s) => { return `shard ${s.shardID}: ${s.ping}ms, ${s.guilds} guilds, status code: ${s.status}`}).join("\n")}`))
+                    document.getElementById("status").appendChild(li);
+                }
+            }
+        }
+
+        req.open( "GET", "https://data.qstats.vysion.cc/", true ); // false for synchronous request
+        req.send( null );
+
+
+
+    </script>
 </html>
