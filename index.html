@@ -16,22 +16,19 @@
                 <p id="join">Join <span id="gcount">many</span> other servers and invite QStats today.</p>
                 <div class="section">
                     <a href="https://discordapp.com/oauth2/authorize?client_id=709881098561257516&scope=bot&permissions=0" class="button">
-                        Invite Bot to Server
+                        Invite!
                     </a>
                     <a href="https://github.com/ethanwritescode/QStats">
                         <div class="button">Github</div>
                     </a>
                     <a href="https://discord.gg/F7RBKh2">
-                        <div class="button">Support Server</div>
-                    </a>
-                    <a href="https://quavergame.com">
-                        <div class="button">Quaver Website</div>
+                        <div class="button">Discord</div>
                     </a>
                 </div>
             </div>
-            <img src="BgTexture.svg" id="bg-texture">
+            <img src="gaming.png" id="bg-texture">
         </div>
-        <img src="wave.svg" class="wave">
+<!--        <img src="wave.svg" class="wave">-->
         <div id="content">
             <div class="card-box">
                 <div class="card">
@@ -79,15 +76,15 @@
             </div>
         </div>
         <div id="footer">
-            <p>Developed by <a href="https://vysion.cc" style="color:#1DC5FF">Vysion#3272</a></p>
-            <p>Not associated or endorsed by Quaver</p>
-            <div id="status" style="white-space: pre-line">
-                <p>nerd statistics below</p>
+            <div id="footer-credits">
+                <p>Developed by <a href="https://vysion.cc" style="color:#1DC5FF">Vysion#3272</a>. Mascot drawn by <a href="https://www.instagram.com/mayu.niki/" style="color:#1DC5FF">mayuniki</a>.</p>
+            </div>
+            <div id="status">
             </div>
         </div>
     </body>
     <script>
-
+        // can u not look at this code thanks
         function formatBytes(bytes, decimals = 2) {
             if (bytes === 0) return '0B';
 
@@ -108,14 +105,47 @@
                 console.log(d);
 
                 for (let i = 0; i < d.length; i++) {
-                    const li = document.createElement("p");
-                    li.appendChild(document.createTextNode(`cluster ${i}: ${formatBytes(d[i].heap)} heap, ${formatBytes(d[i].rss)} rss\n${d[i].shards.map((s) => { return `shard ${s.shardID}: ${s.ping}ms, ${s.guilds} guilds, status code: ${s.status}`}).join("\n")}`))
-                    document.getElementById("status").appendChild(li);
+                    const baseDiv = document.createElement("div")
+                    baseDiv.classList.add("cluster")
+
+                    const clusterTitle = document.createElement("div");
+                    clusterTitle.classList.add("cluster-title")
+                    clusterTitle.appendChild(document.createTextNode(`Cluster ${i}`))
+                    baseDiv.appendChild(clusterTitle);
+
+                    const clusterStats = document.createElement("div");
+                    clusterStats.classList.add("cluster-stats")
+                    clusterStats.appendChild(document.createTextNode(`${formatBytes(d[i].heap)} heap - ${formatBytes(d[i].rss)} rss`))
+                    baseDiv.appendChild(clusterStats);
+
+                    const clusterContentDiv = document.createElement("div")
+                    clusterContentDiv.classList.add("cluster-content")
+                    baseDiv.appendChild(clusterContentDiv)
+
+                    d[i].shards.forEach((s) => {
+                        const shardDiv = document.createElement("div")
+                        shardDiv.classList.add("shard")
+                        const shardIDDiv = document.createElement("div");
+                        shardIDDiv.classList.add("shard-id")
+                        const shardContentDiv = document.createElement("div");
+                        shardContentDiv.classList.add("shard-content")
+
+                        shardIDDiv.appendChild(document.createTextNode(`Shard ${s.shardID}`))
+                        shardContentDiv.appendChild(document.createTextNode(`${s.ping}ms - ${s.guilds} guilds`))
+
+                        if (s.status === 0) {
+                            shardDiv.classList.add("ok");
+                        }
+                        shardDiv.appendChild(shardIDDiv)
+                        shardDiv.appendChild(shardContentDiv)
+                        clusterContentDiv.appendChild(shardDiv);
+                    })
+                    document.getElementById("status").appendChild(baseDiv);
                 }
             }
         }
 
-        req.open( "GET", "https://data.qstats.vysion.cc/", true ); // false for synchronous request
+        req.open( "GET", "https://qstatsdata.vysion.cc/", true ); // false for synchronous request
         req.send( null );
 
 
