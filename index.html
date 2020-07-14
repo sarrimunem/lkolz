@@ -11,9 +11,8 @@
     <body>
         <div id="header-wrapper">
             <div id="header">
-                <img src="FullTextLogo.svg">
-                <p class="no-bottom">Get Quaver profiles, scores and more without ever leaving Discord.</p>
-                <p id="join">Join <span id="gcount">many</span> other servers and invite QStats today.</p>
+                <img src="FullTextLogo.svg" alt="epic">
+                <p>Get Quaver profiles, scores and more without ever leaving Discord.</p>
                 <div class="section">
                     <a href="https://discordapp.com/oauth2/authorize?client_id=709881098561257516&scope=bot&permissions=0" class="button">
                         Invite!
@@ -26,48 +25,48 @@
                     </a>
                 </div>
             </div>
-            <img src="gaming.png" id="bg-texture">
+            <img src="gaming.png" id="bg-texture" alt="gaming">
         </div>
 <!--        <img src="wave.svg" class="wave">-->
         <div id="content">
             <div class="card-box">
                 <div class="card">
-                    <img src="stats.svg">
+                    <img src="stats.svg" alt="stats">
                     <div class="card-content">
                         <h2>Detailed score information</h2>
                         <p>View everything about scores players set, such as ratio, judgement counts, rating, and more.</p>
                     </div>
                 </div>
                 <div class="card">
-                    <img src="map.svg">
+                    <img src="map.svg" alt="map">
                     <div class="card-content">
                         <h2>Instant map and mapset previews</h2>
                         <p>Paste a mapset/map link from Quaver into the chat and QStats will instantly give a preview of that map!</p>
                     </div>
                 </div>
                 <div class="card">
-                    <img src="compare.svg">
+                    <img src="compare.svg" alt="compare">
                     <div class="card-content">
                         <h2>Compare your scores</h2>
                         <p>Whenever a map/set of maps are referenced in chat (whether this be from score commands/map URL linking), you can compare yours or someone else's score on that map!</p>
                     </div>
                 </div>
                 <div class="card">
-                    <img src="link.svg">
+                    <img src="link.svg" alt="link">
                     <div class="card-content">
                         <h2>Link your Quaver account</h2>
                         <p>Link your username to run commands without needing to specify a username! Also, this command allows you to set your preferred keymode.</p>
                     </div>
                 </div>
                 <div class="card">
-                    <img src="free.svg">
+                    <img src="free.svg" alt="free">
                     <div class="card-content">
                         <h2>No paywalled commands</h2>
                         <p>All features of QStats will be 100% free, forever.</p>
                     </div>
                 </div>
                 <div class="card">
-                    <img src="open.svg">
+                    <img src="open.svg" alt="open">
                     <div class="card-content">
                         <h2>Open source</h2>
                         <p>QStats is free to modify and distribute within reason. If you're not sure how you can do this, read the LICENSE on the Github page.</p>
@@ -77,78 +76,8 @@
         </div>
         <div id="footer">
             <div id="footer-credits">
-                <p>Developed by <a href="https://vysion.cc" style="color:#1DC5FF">Vysion#3272</a>. Mascot drawn by <a href="https://www.instagram.com/mayu.niki/" style="color:#1DC5FF">mayuniki</a>.</p>
-            </div>
-            <div id="status">
+                <p>Developed by <a href="https://vysion.cc" style="color:#1DC5FF">Vysion#3272</a>. Mascot drawn by <a href="https://www.instagram.com/mayun.iki/" style="color:#1DC5FF">mayuniki</a>.</p>
             </div>
         </div>
     </body>
-    <script>
-        // can u not look at this code thanks
-        function formatBytes(bytes, decimals = 2) {
-            if (bytes === 0) return '0B';
-
-            const k = 1024;
-            const dm = decimals < 0 ? 0 : decimals;
-            const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-        }
-        let req = new XMLHttpRequest();
-
-        req.onreadystatechange = function() {
-            if (req.readyState === 4 && req.status === 200) {
-                const d = JSON.parse(req.responseText);
-                document.getElementById("gcount").innerText = d.map((v) => { return v.shards.map((v2) => v2.guilds).reduce((a, b) => { return a + b}, 0)}).reduce((a, b) => { return a + b}, 0);
-                console.log(d);
-
-                for (let i = 0; i < d.length; i++) {
-                    const baseDiv = document.createElement("div")
-                    baseDiv.classList.add("cluster")
-
-                    const clusterTitle = document.createElement("div");
-                    clusterTitle.classList.add("cluster-title")
-                    clusterTitle.appendChild(document.createTextNode(`Cluster ${i}`))
-                    baseDiv.appendChild(clusterTitle);
-
-                    const clusterStats = document.createElement("div");
-                    clusterStats.classList.add("cluster-stats")
-                    clusterStats.appendChild(document.createTextNode(`${formatBytes(d[i].heap)} heap - ${formatBytes(d[i].rss)} rss`))
-                    baseDiv.appendChild(clusterStats);
-
-                    const clusterContentDiv = document.createElement("div")
-                    clusterContentDiv.classList.add("cluster-content")
-                    baseDiv.appendChild(clusterContentDiv)
-
-                    d[i].shards.forEach((s) => {
-                        const shardDiv = document.createElement("div")
-                        shardDiv.classList.add("shard")
-                        const shardIDDiv = document.createElement("div");
-                        shardIDDiv.classList.add("shard-id")
-                        const shardContentDiv = document.createElement("div");
-                        shardContentDiv.classList.add("shard-content")
-
-                        shardIDDiv.appendChild(document.createTextNode(`Shard ${s.shardID}`))
-                        shardContentDiv.appendChild(document.createTextNode(`${s.ping}ms - ${s.guilds} guilds`))
-
-                        if (s.status === 0) {
-                            shardDiv.classList.add("ok");
-                        }
-                        shardDiv.appendChild(shardIDDiv)
-                        shardDiv.appendChild(shardContentDiv)
-                        clusterContentDiv.appendChild(shardDiv);
-                    })
-                    document.getElementById("status").appendChild(baseDiv);
-                }
-            }
-        }
-
-        req.open( "GET", "", true ); // false for synchronous request
-        req.send( null );
-
-
-
-    </script>
 </html>
